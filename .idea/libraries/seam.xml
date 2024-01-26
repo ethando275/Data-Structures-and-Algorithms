@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="seam">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Seam Carving/seam.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,1288 @@
+
+
+netid => ed8205
+assignment => Autocomplete
+file01 => @/n/fs/tigerfile/Files/COS226_S2023/Autocomplete/submissions/83b1c8d256f9a14c335f095b396df068/Autocomplete.java;filename=20230227152240/Autocomplete.java
+file02 => @/n/fs/tigerfile/Files/COS226_S2023/Autocomplete/submissions/83b1c8d256f9a14c335f095b396df068/BinarySearchDeluxe.java;filename=20230227152244/BinarySearchDeluxe.java
+file03 => @/n/fs/tigerfile/Files/COS226_S2023/Autocomplete/submissions/83b1c8d256f9a14c335f095b396df068/Term.java;filename=20230227152957/Term.java
+The following files were submitted:
+----------------------------------
+ 3.5K Feb 27 15:22 Autocomplete.java
+ 2.6K Feb 27 15:22 BinarySearchDeluxe.java
+ 3.2K Feb 27 15:29 Term.java
+*** MISSING readme.txt ***
+
+
+*** The acknowledgments.txt file has NOT been submitted.***
+*** This assessment will NOT be graded until the acknowledgments.txt file is submitted.***
+
+
+********************************************************************************
+*  COMPILING                                                                    
+********************************************************************************
+
+
+% javac Term.java
+*-----------------------------------------------------------
+
+% javac BinarySearchDeluxe.java
+*-----------------------------------------------------------
+
+% javac Autocomplete.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+Checking the APIs of your programs.
+*-----------------------------------------------------------
+Term:
+The following nested classes must either be removed or made private:
+  * ReverseWeightOrder
+
+
+BinarySearchDeluxe:
+
+Autocomplete:
+
+================================================================
+
+
+********************************************************************************
+*  CHECKING STYLE AND COMMON BUG PATTERNS                                       
+********************************************************************************
+
+
+% spotbugs *.class
+*-----------------------------------------------------------
+M D IM_AVERAGE_COMPUTATION_COULD_OVERFLOW IM: Computes the average of two integers using code like '(lo + hi) / 2' or '(lo + hi) >> 1', which is susceptible to overflow. Assuming the result is non-negative, use code like 'lo + (hi - lo) / 2' or '(lo + hi) >>> 1'.  At BinarySearchDeluxe.java:[line 18]
+M D IM_AVERAGE_COMPUTATION_COULD_OVERFLOW IM: Computes the average of two integers using code like '(lo + hi) / 2' or '(lo + hi) >> 1', which is susceptible to overflow. Assuming the result is non-negative, use code like 'lo + (hi - lo) / 2' or '(lo + hi) >>> 1'.  At BinarySearchDeluxe.java:[line 44]
+M V EI_EXPOSE_REP2 EI2: Stores a reference to an externally mutable object in the instance variable 'termList', exposing the internal representation of the class 'Autocomplete'. Instead, create a defensive copy of the object referenced by the parameter variable 'terms' and store that copy in the instance variable 'termList'.  At Autocomplete.java:[line 25]
+SpotBugs ends with 3 warnings.
+
+
+================================================================
+
+
+% pmd .
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+% checkstyle *.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Term.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for BinarySearchDeluxe.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Autocomplete.java
+*-----------------------------------------------------------
+[INFO] Autocomplete.java:24:16: This program calls 'Arrays.sort()' from 'Autocomplete()'. This message is intended to assist the grader and does not necessarily indicate an error. [GraderInfo]
+[INFO] Autocomplete.java:55:16: This program calls 'Arrays.sort()' from 'allMatches()'. This message is intended to assist the grader and does not necessarily indicate an error. [GraderInfo]
+
+
+================================================================
+
+
+********************************************************************************
+*  TESTING CORRECTNESS
+********************************************************************************
+
+Testing correctness of Term
+*-----------------------------------------------------------
+Running 17 total tests.
+
+The tests use the following notation:
+  - m     = expected length of random string 1
+  - n     = expected length of random string 2
+  - ALPHA = alphabet
+  - w     = weights are between 0 and w-1
+  - r     = argument to byPrefixOrder()
+
+Test 1a: check that compareTo() satisfies Comparable contract
+  * reflexive:     m = 20, w = 1000000
+    - failed on trial 1 of 100000
+    - p = new Term("ACCGCAGAGGGGCATTTCCCTGAGTTCCTATAAGCCGGCGTACAGCTTTTTTCGAG", 470515)
+    - q = new Term("ACCGCAGAGGGGCATTTCCCTGAGTTCCTATAAGCCGGCGTACAGCTTTTTTCGAG", 470515)
+    - p.compareTo(q)  = 32
+
+  * reflexive:     m =  4, w = 10
+    - failed on trial 1 of 100000
+    - p = new Term("GATCGCATCTTGG", 1)
+    - q = new Term("GATCGCATCTTGG", 1)
+    - p.compareTo(q)  = 32
+
+  * antisymmetric: m = 20, w = 1000000
+    - failed on trial 1 of 100000
+    - p = new Term("GCTCCTATGGGGAAAGCACACGACGCGTGTGGCGTCGGCCGGTCT", 346583)
+    - q = new Term("CTGACTTTTGTCCCGATTGCATAA", 56957)
+    - p.compareTo(q)  = 36
+    - q.compareTo(p)  = 28
+
+  * antisymmetric: m =  4, w = 10
+    - failed on trial 1 of 100000
+    - p = new Term("GGTCTAC", 2)
+    - q = new Term("GTGTCCGC", 3)
+    - p.compareTo(q)  = 32
+    - q.compareTo(p)  = 32
+
+  * transitive:    m = 20, w = 1000000
+  * transitive:    m =  4, w = 10
+  * consistent:    m =  4, w = 1000000
+  * argument is null
+==> FAILED
+
+Test 1b: check correctness of compareTo() with DNA alphabet
+  * m = 1, w = 1000000, alphabet = DNA
+    - failed on trial 1 of 100000
+    - p = new Term("A", 413123)
+    - q = new Term("C", 705353)
+    - student   p.compareTo(q) = 30
+    - reference p.compareTo(q) = -2
+
+  * m = 2, w = 1000000, alphabet = DNA
+    - failed on trial 2 of 100000
+    - p = new Term("AC", 564796)
+    - q = new Term("TGC", 866844)
+    - student   p.compareTo(q) = 13
+    - reference p.compareTo(q) = -19
+
+  * m = 4, w = 1000000, alphabet = DNA
+    - failed on trial 1 of 100000
+    - p = new Term("ATAT", 674291)
+    - q = new Term("CTACGTACAAACC", 53975)
+    - student   p.compareTo(q) = 30
+    - reference p.compareTo(q) = -2
+
+  * m = 8, w = 1000000, alphabet = DNA
+    - failed on trial 3 of 100000
+    - p = new Term("CGCCAACAAAGGAGACGCCAATGTA", 604466)
+    - q = new Term("GAACCGTTTACGTGCATGGCACATCAGGC", 495267)
+    - student   p.compareTo(q) = 28
+    - reference p.compareTo(q) = -4
+
+  * m = 16, w = 1000000, alphabet = DNA
+    - failed on trial 4 of 100000
+    - p = new Term("CGTCGGGTTAAGGATCTATTAA", 966072)
+    - q = new Term("CTCCTAGCATGTGAGTTCCCCTAAACAGGGCCAAATACCCCCC", 222695)
+    - student   p.compareTo(q) = 32
+    - reference p.compareTo(q) = -13
+
+==> FAILED
+
+Test 1c: check correctness of compareTo() with different alphabets
+  * m = 2, w = 1000000, alphabet = UNARY
+    - failed on trial 1 of 100000
+    - p = new Term("AA", 180451)
+    - q = new Term("AAAAA", 593831)
+    - student   p.compareTo(q) = 32
+    - reference p.compareTo(q) = -3
+
+  * m = 2, w = 1000000, alphabet = BINARY
+    - failed on trial 4 of 100000
+    - p = new Term("ABB", 804659)
+    - q = new Term("BABAB", 912208)
+    - student   p.compareTo(q) = 31
+    - reference p.compareTo(q) = -1
+
+  * m = 2, w = 1000000, alphabet = TERNARY
+    - failed on trial 4 of 100000
+    - p = new Term("AAa", 610254)
+    - q = new Term("Aa", 78474)
+    - student   p.compareTo(q) = 32
+    - reference p.compareTo(q) = -32
+
+  * m = 2, w = 1000000, alphabet = UPPERCASE
+    - failed on trial 4 of 100000
+    - p = new Term("IYAWYLIDVTZ", 6577)
+    - q = new Term("ZSOW", 816575)
+    - student   p.compareTo(q) = 15
+    - reference p.compareTo(q) = -17
+
+  * m = 2, w = 1000000, alphabet = BASE64
+    - failed on trial 5 of 100000
+    - p = new Term("Zpfew", 589957)
+    - q = new Term("gR", 232935)
+    - student   p.compareTo(q) = 19
+    - reference p.compareTo(q) = -13
+
+  * m = 2, w = 1000000, alphabet = ASCII
+    - failed on trial 21 of 100000
+    - p = new Term("V0H,D[XN^S", 683488)
+    - q = new Term("Z3>", 377727)
+    - student   p.compareTo(q) = 28
+    - reference p.compareTo(q) = -4
+
+  * m = 2, w = 1000000, alphabet = EXTENDED_ASCII
+    - failed on trial 41 of 100000
+    - p = new Term("\u00DC\u00D6N\u0082\u0097AD", 630779)
+    - q = new Term("\u00F8\u00CE\u0093", 402436)
+    - student   p.compareTo(q) = 4
+    - reference p.compareTo(q) = -28
+
+  * m = 2, w = 1000000, alphabet = UNICODE
+    - failed on trial 2413 of 100000
+    - p = new Term("\u13B7\u0E4B\u5C34\u6E5C\uDA3E\uC581\u6DCC\uEB9B\uC109\uF118\uFECF\uD58C\u8D02", 383172)
+    - q = new Term("\u6F6C\u2C4B\uB74E\u6C83\uC2F1\u605F", 515234)
+    - student   p.compareTo(q) = 15387
+    - reference p.compareTo(q) = -23477
+
+==> FAILED
+
+Test 1d: check correctness of compareTo() with different languages
+  * language = Spanish
+  * language = French
+  * language = Russian
+  * language = Korean
+  * language = Vietnamese
+==> passed
+
+Test 2a: check that compare() in byReverseWeightOrder() satisfies Comparator contract
+  * reflexive:     m = 20, w = 1000000
+  * reflexive:     m =  2, w = 10
+  * antisymmetric: m = 20, w = 1000000
+  * antisymmetric: m =  2, w = 10
+  * transitive:    m = 20, w = 1000000
+  * transitive:    m =  2, w = 10
+  * consistent:    m =  5, w = 100
+  * argument is null
+==> passed
+
+Test 2b: check correctnes of compare() in byReverseWeightOrder()
+  * m = 3, n = 3, w = 10
+  * m = 3, n = 3, w = 100
+  * m = 3, n = 3, w = 1000
+  * m = 6, n = 6, w = 10
+  * m = 6, n = 6, w = 100
+  * m = 6, n = 6, w = 1000
+==> passed
+
+Test 3a: check that compare() in byPrefixOrder(4) satisfies Comparator contract
+  * reflexive:     m = 10, w = 1000000
+  * reflexive:     m = 10, w = 10
+  * antisymmetric: m = 10, w = 1000000
+  * antisymmetric: m = 10, w = 10
+  * transitive:    m = 10, w = 1000000
+  * transitive:    m = 10, w = 10
+  * consistent:    m =  6, w = 1000000
+  * argument is null
+==> passed
+
+Test 3b: check correctness of compare() in byPrefixOrder(r) with different values of r
+  * m = 6, n = 6, r = 0, w = 10, alphabet = DNA
+  * m = 6, n = 6, r = 1, w = 10, alphabet = DNA
+  * m = 6, n = 6, r = 2, w = 10, alphabet = DNA
+  * m = 6, n = 6, r = 3, w = 10, alphabet = DNA
+  * m = 6, n = 6, r = 4, w = 10, alphabet = DNA
+  * m = 6, n = 6, r = 5, w = 10, alphabet = DNA
+    - failed on trial 143 of 100000
+    - p = new Term("GGGC", 7)
+    - q = new Term("GGGCCT", 2)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -2
+
+  * m = 6, n = 6, r = 10, w = 10, alphabet = DNA
+    - failed on trial 754 of 100000
+    - p = new Term("GGAT", 7)
+    - q = new Term("GGATAAG", 1)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -3
+
+  * m = 6, n = 6, r = 100, w = 10, alphabet = DNA
+    - failed on trial 1916 of 100000
+    - p = new Term("AATG", 7)
+    - q = new Term("AATGC", 8)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -1
+
+==> FAILED
+
+Test 3c: check correctness of compare() in byPrefixOrder(r) with either
+         m < r < n or n < r < m
+  * m = 4, n = 8, r = 6, w = 10, alphabet = DNA
+    - failed on trial 95 of 100000
+    - p = new Term("CTT", 2)
+    - q = new Term("CTTCAGCA", 0)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -5
+
+  * m = 3, n = 7, r = 5, w = 10, alphabet = DNA
+    - failed on trial 5 of 100000
+    - p = new Term("AC", 9)
+    - q = new Term("ACGGGTCG", 0)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -6
+
+  * m = 2, n = 7, r = 4, w = 10, alphabet = DNA
+    - failed on trial 2 of 100000
+    - p = new Term("GC", 1)
+    - q = new Term("GCTTGGGC", 0)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -6
+
+  * m = 8, n = 4, r = 6, w = 10, alphabet = DNA
+    - failed on trial 112 of 100000
+    - p = new Term("GTATTACTT", 8)
+    - q = new Term("GTA", 4)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = 6
+
+  * m = 7, n = 3, r = 5, w = 10, alphabet = DNA
+    - failed on trial 159 of 100000
+    - p = new Term("CGAGCAAC", 0)
+    - q = new Term("CGA", 3)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = 5
+
+  * m = 7, n = 2, r = 4, w = 10, alphabet = DNA
+    - failed on trial 8 of 100000
+    - p = new Term("AATGGG", 7)
+    - q = new Term("A", 8)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = 5
+
+==> FAILED
+
+Test 3d: check correctness of compare() in byPrefixOrder(r) with either
+         m < n < r or n < m < r
+  * m = 2, n = 6, r = 8, w = 10, alphabet = DNA
+    - failed on trial 6 of 100000
+    - p = new Term("CG", 0)
+    - q = new Term("CGTGGC", 1)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -4
+
+  * m = 3, n = 7, r = 10, w = 10, alphabet = DNA
+    - failed on trial 5 of 100000
+    - p = new Term("CAA", 5)
+    - q = new Term("CAACAC", 5)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -3
+
+  * m = 6, n = 16, r = 22, w = 10, alphabet = DNA
+    - failed on trial 115 of 100000
+    - p = new Term("TC", 5)
+    - q = new Term("TCCCATGAAGACCGCGTG", 4)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = -16
+
+  * m = 6, n = 2, r = 8, w = 10, alphabet = DNA
+    - failed on trial 5 of 100000
+    - p = new Term("AACGAAC", 3)
+    - q = new Term("AAC", 0)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = 4
+
+  * m = 7, n = 3, r = 10, w = 10, alphabet = DNA
+    - failed on trial 24 of 100000
+    - p = new Term("TGGGGACA", 1)
+    - q = new Term("TGG", 7)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = 5
+
+  * m = 16, n = 6, r = 22, w = 10, alphabet = DNA
+    - failed on trial 15 of 100000
+    - p = new Term("ACAACAGTGACA", 6)
+    - q = new Term("AC", 4)
+    - student   compare(p, q)  = 0
+    - reference compare(p, q)  = 10
+
+==> FAILED
+
+Test 3e: check correctness of compare() in byPrefixOrder(r) with m = n < r
+  * m = 1, n = 1, r = 8, w = 10, alphabet = DNA
+  * m = 2, n = 2, r = 3, w = 10, alphabet = DNA
+  * m = 3, n = 3, r = 4, w = 10, alphabet = DNA
+  * m = 4, n = 4, r = 6, w = 10, alphabet = DNA
+  * m = 5, n = 5, r = 7, w = 10, alphabet = DNA
+  * m = 9, n = 9, r = 50, w = 10, alphabet = DNA
+==> passed
+
+Test 3f: check correctness of compare() in byPrefixOrder(r) with different alphabets
+  * m = 8, n = 8, r = 4, w = 10, alphabet = BINARY
+  * m = 8, n = 8, r = 4, w = 10, alphabet = UNARY
+  * m = 8, n = 8, r = 4, w = 10, alphabet = TERNARY
+    - failed on trial 10 of 100000
+    - p = new Term("AaaAa A  ", 4)
+    - q = new Term("aaA  aAa", 2)
+    - student   compare(p, q)  = 65
+    - reference compare(p, q)  = -1
+
+  * m = 8, n = 8, r = 4, w = 10, alphabet = UPPERCASE
+  * m = 8, n = 8, r = 4, w = 10, alphabet = BASE64
+    - failed on trial 1 of 100000
+    - p = new Term("Qche4Y", 2)
+    - q = new Term("hsbkIJfn", 5)
+    - student   compare(p, q)  = 9
+    - reference compare(p, q)  = -1
+
+==> FAILED
+
+Test 3g: check correctness of compare() in byPrefixOrder(r) with ASCII
+         and Unicode alphabets
+  * m = 8, n = 8, r = 1, w = 10, alphabet = ASCII
+    - failed on trial 5 of 100000
+    - p = new Term("OGk'j$!", 7)
+    - q = new Term("axl3d~;", 2)
+    - student   compare(p, q)  = 14
+    - reference compare(p, q)  = -1
+
+  * m = 8, n = 8, r = 2, w = 10, alphabet = ASCII
+    - failed on trial 1 of 100000
+    - p = new Term("T^g@4~"8oh", 5)
+    - q = new Term("n"OI@Iw~F8", 2)
+    - student   compare(p, q)  = 6
+    - reference compare(p, q)  = -1
+
+  * m = 8, n = 8, r = 4, w = 10, alphabet = ASCII
+    - failed on trial 3 of 100000
+    - p = new Term("lv?w0'=", 5)
+    - q = new Term("XNdAum{)*]", 4)
+    - student   compare(p, q)  = -12
+    - reference compare(p, q)  = 1
+
+  * m = 8, n = 8, r = 1, w = 10, alphabet = EXTENDED_ASCII
+    - failed on trial 5 of 100000
+    - p = new Term("T\u00AA\u009A\u009Cc\u00A0\u00C92", 1)
+    - q = new Term("`\u00FFY|4\u00BCGV\u0095", 3)
+    - student   compare(p, q)  = 20
+    - reference compare(p, q)  = -1
+
+  * m = 8, n = 8, r = 2, w = 10, alphabet = EXTENDED_ASCII
+    - failed on trial 6 of 100000
+    - p = new Term("\u00EA\u00DF\u00DFg\u00AA\u0085\u00C7\u00C0\u00E52", 6)
+    - q = new Term("\u00D6\u00F8\u008D\u00D0<\u00AA\u00F8\u00AF\u00DE2", 0)
+    - student   compare(p, q)  = -12
+    - reference compare(p, q)  = 1
+
+  * m = 8, n = 8, r = 4, w = 10, alphabet = EXTENDED_ASCII
+    - failed on trial 44 of 100000
+    - p = new Term("\u00F4\u00EB\u00D7\u00F2\u0092\u00D0", 9)
+    - q = new Term("\u00DAsq\u00B2\u00ABT", 4)
+    - student   compare(p, q)  = -6
+    - reference compare(p, q)  = 1
+
+  * m = 8, n = 8, r = 1, w = 10, alphabet = UNICODE
+    - failed on trial 1015 of 100000
+    - p = new Term("\u10BA\uEE82\u248B\u646A\u73F1\u906E\u5372\uD921\u62A8\u4859", 2)
+    - q = new Term("\u232A\u04C2\u654E\u516F\uE626\u2220", 7)
+    - student   compare(p, q)  = 2544
+    - reference compare(p, q)  = -1
+
+  * m = 8, n = 8, r = 2, w = 10, alphabet = UNICODE
+    - failed on trial 1119 of 100000
+    - p = new Term("\u4E6F\u2E23\u322B\u1B87\u9996\uE03F\u3A17\uA835\u2390\u4BF7", 6)
+    - q = new Term("\u13E4\u10EB\uB906\u6ED1\uBA5D\uFE46\uB66D\uF75D", 5)
+    - student   compare(p, q)  = -23877
+    - reference compare(p, q)  = 1
+
+  * m = 8, n = 8, r = 4, w = 10, alphabet = UNICODE
+    - failed on trial 970 of 100000
+    - p = new Term("\u13EC\u7CE4\uC0A2\u2EB5\u5FDD\uCB6D\uA478\u9658\u3510", 2)
+    - q = new Term("\u6895\uE5E6\u27E8\u5C4C\u85FB\u48AF\u2C61\u72BA", 2)
+    - student   compare(p, q)  = 17191
+    - reference compare(p, q)  = -1
+
+==> FAILED
+
+Test 4: check whether two byPrefixOrder() comparators can be created at the same time
+  * m = 8, n = 8, r = 3, w = 10
+  * m = 8, n = 8, r = 4, w = 10
+  * m = 8, n = 8, r = 3, w = 10
+  * m = 8, n = 8, r = 4, w = 10
+==> passed
+
+Test 5: check that toString() returns a string in proper format
+  * query = ""hello"", weight = 12345678901234
+  * query = ""GOODBYE"", weight = 99999999999999
+  * query = ""½ λ ☺ ∈ ♬ ❤"", weight = 31415926535898
+==> passed
+
+Test 6: call Term constructor with invalid arguments
+  * query = "hello", weight = -1
+  * query = "hello", weight = -1000
+  * query = "hello", weight = -9223372036854775808
+  * query = null,    weight = 1
+  * query = null,    weight = -1
+  * query = null,    weight = 0
+==> passed
+
+Test 7: call byPrefixOrder(r) with invalid arguments
+  * r = -1
+  * r = -2
+  * r = -1000
+  * r = -2147483648
+==> passed
+
+
+Total: 9/17 tests passed!
+
+
+================================================================
+Testing correctness of BinarySearchDeluxe
+*-----------------------------------------------------------
+Running 14 total tests.
+
+Tests 1-4 use the following terminology:
+  - search hit     = binary search for a query key in the array
+  - search miss    = binary search for a query key not in the array
+  - false positive = return -1 for a query key in the array
+  - false negative = return a non-negative integer for a query key not in array
+
+Test 1a: check firstIndexOf() search hit in random array of between n1 and n2 strings,
+         with no duplicate strings
+  * n1 = 1, n2 = 4
+    - failed on trial 1 of 1000
+             0        1        2        3 
+      -----------------------------------
+      CHQUAJLV KALFTKMW PYZZJHEV UYNWGZSL 
+
+
+      String query = "CHQUAJLV";
+      String[] a = { "CHQUAJLV", "KALFTKMW", "PYZZJHEV", "UYNWGZSL" };
+
+    - n = 4
+    - reference firstIndexOf(a, "CHQUAJLV") = 0
+    - student   firstIndexOf(a, "CHQUAJLV") = -1
+      [ false negative ]
+
+  * n1 = 4, n2 = 8
+    - failed on trial 1 of 1000
+            0       1       2       3       4       5 
+      -----------------------------------------------
+      FUNRMSZ GRFRBVI OKFGEEG PZXEKQT XYOXNDJ ZROWZJX 
+
+
+      String query = "ZROWZJX";
+      String[] a = { "FUNRMSZ", "GRFRBVI", "OKFGEEG", "PZXEKQT", "XYOXNDJ", "ZROWZJX" };
+
+    - n = 6
+    - reference firstIndexOf(a, "ZROWZJX") = 5
+    - student   firstIndexOf(a, "ZROWZJX") = -1
+      [ false negative ]
+
+  * n1 = 8, n2 = 12
+    - failed on trial 2 of 1000
+           0      1      2      3      4      5      6      7      8      9     10 
+      ----------------------------------------------------------------------------
+      DFEHCG DNJSYU FKZMLC FROBWT JVJLRT PUCVWT QAEHOH QISHFB UQYFLO VRPENE WWOQNI 
+
+
+      String query = "DNJSYU";
+      String[] a = { "DFEHCG", "DNJSYU", "FKZMLC", "FROBWT", "JVJLRT", "PUCVWT", "QAEHOH", "QISHFB", "UQYFLO", "VRPENE", "WWOQNI" };
+
+    - n = 11
+    - reference firstIndexOf(a, "DNJSYU") = 1
+    - student   firstIndexOf(a, "DNJSYU") = -1
+      [ false negative ]
+
+  * n1 = 12, n2 = 16
+    - failed on trial 2 of 1000
+          0     1     2     3     4     5     6     7     8     9    10    11    12 
+      -----------------------------------------------------------------------------
+      ADQGM FAXVA IMNEH IUGAK LZSER MVBVC NMEMC NZVDG TIGYM VHBHT WQPCZ YNWAA YXAZP 
+
+
+      String query = "FAXVA";
+      String[] a = { "ADQGM", "FAXVA", "IMNEH", "IUGAK", "LZSER", "MVBVC", "NMEMC", "NZVDG", "TIGYM", "VHBHT", "WQPCZ", "YNWAA", "YXAZP" };
+
+    - n = 13
+    - reference firstIndexOf(a, "FAXVA") = 1
+    - student   firstIndexOf(a, "FAXVA") = -1
+      [ false negative ]
+
+==> FAILED
+
+Test 1b: check firstIndexOf() search hit in random array of between n1 and n2 strings
+  * n1 = 30, n2 = 40
+    - failed on trial 1 of 1000
+       0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 
+      --------------------------------------------------------------------------------------------------------------------
+       A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A 
+
+
+      String query = "A";
+      String[] a = { "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" };
+
+    - n = 39
+    - reference firstIndexOf(a, "A") = 0
+    - student   firstIndexOf(a, "A") = 1
+      [ 1 is the index of a matching string but not the first such index ]
+
+  * n1 = 20, n2 = 30
+    - failed on trial 5 of 1000
+       0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 
+      --------------------------------------------------------------------
+      AC AG AT AT CA CA CA CA CC CC CG CG CT GC GC GC GG GG GT GT GT TA TG 
+
+
+      String query = "TG";
+      String[] a = { "AC", "AG", "AT", "AT", "CA", "CA", "CA", "CA", "CC", "CC", "CG", "CG", "CT", "GC", "GC", "GC", "GG", "GG", "GT", "GT", "GT", "TA", "TG" };
+
+    - n = 23
+    - reference firstIndexOf(a, "TG") = 22
+    - student   firstIndexOf(a, "TG") = -1
+      [ false negative ]
+
+  * n1 = 15, n2 = 20
+    - failed on trial 3 of 1000
+        0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15 
+      ---------------------------------------------------------------
+      CAT CCA CGA CGA CGT GAC GCC GGC GGC GGG GGT GTA GTA GTC TGC TTG 
+
+
+      String query = "CGA";
+      String[] a = { "CAT", "CCA", "CGA", "CGA", "CGT", "GAC", "GCC", "GGC", "GGC", "GGG", "GGT", "GTA", "GTA", "GTC", "TGC", "TTG" };
+
+    - n = 16
+    - reference firstIndexOf(a, "CGA") = 2
+    - student   firstIndexOf(a, "CGA") = 3
+      [ 3 is the index of a matching string but not the first such index ]
+
+  * n1 = 10, n2 = 15
+    - failed on trial 1 of 1000
+         0    1    2    3    4    5    6    7    8    9   10   11   12   13   14 
+      --------------------------------------------------------------------------
+      AAAA AABA ABBA ABBB ABBB BAAA BAAB BABA BABA BABB BABB BBAA BBAA BBAB BBBA 
+
+
+      String query = "AAAA";
+      String[] a = { "AAAA", "AABA", "ABBA", "ABBB", "ABBB", "BAAA", "BAAB", "BABA", "BABA", "BABB", "BABB", "BBAA", "BBAA", "BBAB", "BBBA" };
+
+    - n = 15
+    - reference firstIndexOf(a, "AAAA") = 0
+    - student   firstIndexOf(a, "AAAA") = -1
+      [ false negative ]
+
+==> FAILED
+
+Test 2a: check lastIndexOf() search hit in random array of between n1 and n2 strings,
+         with no duplicate strings
+  * n1 = 1, n2 = 4
+   - failed on trial 2 of 1000
+             0        1        2        3 
+      -----------------------------------
+      ATNQTLDM IFVRWOEV JRXYDWFZ YHYCYBRZ 
+
+
+      String query = "YHYCYBRZ";
+      String[] a = { "ATNQTLDM", "IFVRWOEV", "JRXYDWFZ", "YHYCYBRZ" };
+
+    - n = 4
+    - reference lastIndexOf(a, "YHYCYBRZ") = 3
+    - student   lastIndexOf(a, "YHYCYBRZ") = -1
+      [ false negative ]
+
+  * n1 = 4, n2 = 8
+   - failed on trial 2 of 1000
+            0       1       2       3       4       5       6       7 
+      ---------------------------------------------------------------
+      ARSGWAF BMHTXIB CZMYFGF EVBXTKX HUQDGDY NZTLXJM TFOLBCI WTYJSHQ 
+
+
+      String query = "HUQDGDY";
+      String[] a = { "ARSGWAF", "BMHTXIB", "CZMYFGF", "EVBXTKX", "HUQDGDY", "NZTLXJM", "TFOLBCI", "WTYJSHQ" };
+
+    - n = 8
+    - reference lastIndexOf(a, "HUQDGDY") = 4
+    - student   lastIndexOf(a, "HUQDGDY") = -1
+      [ false negative ]
+
+  * n1 = 8, n2 = 12
+   - failed on trial 3 of 1000
+           0      1      2      3      4      5      6      7      8      9     10 
+      ----------------------------------------------------------------------------
+      AXMOLT BQKJMG CDLNQM CQBVOU DAVNSV EITMCA IPFZPF KQRQVZ SFMOXV TVRBAH ZSWZHH 
+
+
+      String query = "BQKJMG";
+      String[] a = { "AXMOLT", "BQKJMG", "CDLNQM", "CQBVOU", "DAVNSV", "EITMCA", "IPFZPF", "KQRQVZ", "SFMOXV", "TVRBAH", "ZSWZHH" };
+
+    - n = 11
+    - reference lastIndexOf(a, "BQKJMG") = 1
+    - student   lastIndexOf(a, "BQKJMG") = -1
+      [ false negative ]
+
+  * n1 = 12, n2 = 16
+   - failed on trial 1 of 1000
+          0     1     2     3     4     5     6     7     8     9    10    11    12    13 
+      -----------------------------------------------------------------------------------
+      AJMUE AZCQM BCLZE FQOIF HHWQF ISZUV MRDUS NKUHD OIIOY OOTIC UZXQM XVRYV YFMRA ZMOGC 
+
+
+      String query = "OOTIC";
+      String[] a = { "AJMUE", "AZCQM", "BCLZE", "FQOIF", "HHWQF", "ISZUV", "MRDUS", "NKUHD", "OIIOY", "OOTIC", "UZXQM", "XVRYV", "YFMRA", "ZMOGC" };
+
+    - n = 14
+    - reference lastIndexOf(a, "OOTIC") = 9
+    - student   lastIndexOf(a, "OOTIC") = -1
+      [ false negative ]
+
+==> FAILED
+
+Test 2b: check lastIndexOf() search hit in random array of between n1 and n2 strings
+  * n1 = 30, n2 = 40
+   - failed on trial 1 of 1000
+       0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 
+      -----------------------------------------------------------------------------------------------------------------
+       A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A 
+
+
+      String query = "A";
+      String[] a = { "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A" };
+
+    - n = 38
+    - reference lastIndexOf(a, "A") = 37
+    - student   lastIndexOf(a, "A") = 36
+      [ 36 is the index of a matching string but not the last such index ]
+
+  * n1 = 20, n2 = 30
+   - failed on trial 1 of 1000
+       0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 
+      --------------------------------------------------------------------------------------
+      AA AC AC AC AG AT CA CG CT CT GA GA GA GA GC GC GG GT GT GT TA TC TC TC TG TT TT TT TT 
+
+
+      String query = "GA";
+      String[] a = { "AA", "AC", "AC", "AC", "AG", "AT", "CA", "CG", "CT", "CT", "GA", "GA", "GA", "GA", "GC", "GC", "GG", "GT", "GT", "GT", "TA", "TC", "TC", "TC", "TG", "TT", "TT", "TT", "TT" };
+
+    - n = 29
+    - reference lastIndexOf(a, "GA") = 13
+    - student   lastIndexOf(a, "GA") = 12
+      [ 12 is the index of a matching string but not the last such index ]
+
+  * n1 = 15, n2 = 20
+   - failed on trial 1 of 1000
+        0   1   2   3   4   5   6   7   8   9  10  11  12  13  14 
+      -----------------------------------------------------------
+      AAG AGA AGC AGG CGT CTA CTT GGA GGT GTA GTT TAA TGC TTA TTA 
+
+
+      String query = "GTT";
+      String[] a = { "AAG", "AGA", "AGC", "AGG", "CGT", "CTA", "CTT", "GGA", "GGT", "GTA", "GTT", "TAA", "TGC", "TTA", "TTA" };
+
+    - n = 15
+    - reference lastIndexOf(a, "GTT") = 10
+    - student   lastIndexOf(a, "GTT") = -1
+      [ false negative ]
+
+  * n1 = 10, n2 = 15
+   - failed on trial 1 of 1000
+         0    1    2    3    4    5    6    7    8    9   10   11   12   13 
+      ---------------------------------------------------------------------
+      AAAA AAAA AAAB AAAB AABA ABAA ABAB BAAA BAAB BABA BBAB BBAB BBBB BBBB 
+
+
+      String query = "BBBB";
+      String[] a = { "AAAA", "AAAA", "AAAB", "AAAB", "AABA", "ABAA", "ABAB", "BAAA", "BAAB", "BABA", "BBAB", "BBAB", "BBBB", "BBBB" };
+
+    - n = 14
+    - reference lastIndexOf(a, "BBBB") = 13
+    - student   lastIndexOf(a, "BBBB") = 12
+      [ 12 is the index of a matching string but not the last such index ]
+
+==> FAILED
+
+Test 3a: check firstIndexOf() search miss in random array of between
+         n1 and n2 strings, with no duplicates
+  * n1 = 1, n2 = 4
+  * n1 = 4, n2 = 8
+  * n1 = 8, n2 = 12
+  * n1 = 12, n2 = 16
+==> passed
+
+Test 3b: check firstIndexOf() search miss in random array of between n1 and n2 strings
+  * n1 = 16, n2 = 31
+  * n1 = 8, n2 = 15
+  * n1 = 4, n2 = 7
+==> passed
+
+Test 4a: check lastIndexOf() search miss in random array of between n1 and n2 strings,
+         with no duplicate strings
+  * n1 = 1, n2 = 4
+  * n1 = 4, n2 = 8
+  * n1 = 8, n2 = 12
+  * n1 = 12, n2 = 16
+==> passed
+
+Test 4b: check lastIndexOf() search miss in random array of between n1 and n2 strings
+  * n1 = 16, n2 = 31
+  * n1 = 8, n2 = 15
+  * n1 = 4, n2 = 7
+==> passed
+
+Test 5: check lastIndexOf() and firstIndexOf() in array of length 0
+  * n = 0
+  * n = 0
+==> passed
+
+Test 6: check lastIndexOf() and firstIndexOf() with null arguments
+  * a = not null, key = not null, comparator =     null
+  * a = not null, key =     null, comparator = not null
+  * a = not null, key =     null, comparator =     null
+  * a =     null, key = not null, comparator = not null
+  * a =     null, key = not null, comparator =     null
+  * a =     null, key =     null, comparator = not null
+  * a =     null, key =     null, comparator =     null
+==> passed
+
+Test 7: check lastIndexOf() and firstIndexOf() on a data type for which
+        equal keys are not necessarily reference equal
+  * n = 5 random strings
+    - failed on trial 17 of 1000
+       0  1  2  3  4 
+      --------------
+       F  H  K  S  T 
+
+
+      String query = "T";
+      String[] a = { "F", "H", "K", "S", "T" };
+
+      for (int i = 0; i < a.length; i++)
+          a[i] = new String(a[i]);
+
+    - n = 5
+    - reference firstIndexOf(a, "T") = 4
+    - student   firstIndexOf(a, "T") = -1
+    - reference  lastIndexOf(a, "T") = 4
+    - student    lastIndexOf(a, "T") = -1
+      [ false negative for firstIndexOf() ]
+      [ false negative for lastIndexOf() ]
+
+  * n = 10 random strings
+    - failed on trial 1 of 1000
+       0  1  2  3  4  5  6  7  8  9 
+      -----------------------------
+       A  D  E  G  G  H  I  T  Y  Y 
+
+
+      String query = "Y";
+      String[] a = { "A", "D", "E", "G", "G", "H", "I", "T", "Y", "Y" };
+
+      for (int i = 0; i < a.length; i++)
+          a[i] = new String(a[i]);
+
+    - n = 10
+    - reference firstIndexOf(a, "Y") = 8
+    - student   firstIndexOf(a, "Y") = 8
+    - reference  lastIndexOf(a, "Y") = 9
+    - student    lastIndexOf(a, "Y") = 8
+      [ 8 is the index of a matching string but not the last such index ]
+
+  * n = 15 random strings
+    - failed on trial 5 of 1000
+       0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 
+      --------------------------------------------
+       A  C  F  F  G  K  K  O  P  Q  Q  U  W  Y  Y 
+
+
+      String query = "F";
+      String[] a = { "A", "C", "F", "F", "G", "K", "K", "O", "P", "Q", "Q", "U", "W", "Y", "Y" };
+
+      for (int i = 0; i < a.length; i++)
+          a[i] = new String(a[i]);
+
+    - n = 15
+    - reference firstIndexOf(a, "F") = 2
+    - student   firstIndexOf(a, "F") = 3
+    - reference  lastIndexOf(a, "F") = 3
+    - student    lastIndexOf(a, "F") = 3
+      [ 3 is the index of a matching string but not the first such index ]
+
+==> FAILED
+
+Test 8: check lastIndexOf() and firstIndexOf() on a data type for which
+        compare() is inconsistent with equals()
+  * n = 5 random integers between 0 and 99
+    - failed on trial 69 of 1000
+    - a[] = { 2 2 57 65 85 }
+    - reference firstIndexOf(a, "2") = 0
+    - student   firstIndexOf(a, "2") = 0
+    - reference  lastIndexOf(a, "2") = 1
+    - student    lastIndexOf(a, "2") = 0
+
+  * n = 10 random integers between 0 and 99
+    - failed on trial 69 of 1000
+    - a[] = { 3 56 60 63 71 72 83 83 90 93 }
+    - reference firstIndexOf(a, "3") = 0
+    - student   firstIndexOf(a, "3") = -1
+    - reference  lastIndexOf(a, "3") = 0
+    - student    lastIndexOf(a, "3") = -1
+
+  * n = 20 random integers between 0 and 99
+    - failed on trial 4 of 1000
+    - a[] = { 6 7 10 14 17 30 38 39 47 51 51 54 62 76 87 93 94 95 97 99 }
+    - reference firstIndexOf(a, "14") = 3
+    - student   firstIndexOf(a, "14") = -1
+    - reference  lastIndexOf(a, "14") = 3
+    - student    lastIndexOf(a, "14") = -1
+
+==> FAILED
+
+Test 9: check that lastIndexOf() and firstIndexOf() don't assume
+        compare() can return only -1, 0, or +1
+  * n = 5 random integers between 0 and 99
+    - failed on trial 212 of 1000
+    - a[] = { 1 2 4 5 32 }
+    - reference firstIndexOf(a, "2") = 1
+    - student   firstIndexOf(a, "2") = -1
+    - reference  lastIndexOf(a, "2") = 1
+    - student    lastIndexOf(a, "2") = -1
+
+  * n = 10 random integers between 0 and 99
+    - failed on trial 2 of 1000
+    - a[] = { 2 4 18 39 44 61 62 80 80 81 }
+    - reference firstIndexOf(a, "2") = 0
+    - student   firstIndexOf(a, "2") = -1
+    - reference  lastIndexOf(a, "2") = 0
+    - student    lastIndexOf(a, "2") = -1
+
+  * n = 20 random integers between 0 and 99
+    - failed on trial 9 of 1000
+    - a[] = { 1 12 18 30 34 41 42 42 51 52 55 63 65 68 77 79 81 87 94 94 }
+    - reference firstIndexOf(a, "1") = 0
+    - student   firstIndexOf(a, "1") = -1
+    - reference  lastIndexOf(a, "1") = 0
+    - student    lastIndexOf(a, "1") = -1
+
+==> FAILED
+
+Test 10: check that lastIndexOf() and firstIndexOf() don't mutate the argument array
+==> passed
+
+
+Total: 7/14 tests passed!
+
+
+================================================================
+********************************************************************************
+*  TESTING CORRECTNESS (substituting reference Term and BinarySearchDeluxe)
+********************************************************************************
+
+Testing correctness of Autocomplete
+*-----------------------------------------------------------
+Running 12 total tests.
+
+Test 1: check allMatches() on search hits
+  * file = fortune1000-randomly-ordered.txt
+  * file = wiktionary.txt
+  * file = baby-names.txt
+  * file = cities.txt
+  * file = words-100000.txt
+==> passed
+
+Test 2: check allMatches() with empty prefix
+  * file = fortune1000-randomly-ordered.txt
+  * file = wiktionary.txt
+  * file = baby-names.txt
+  * file = cities.txt
+==> passed
+
+Test 3: check allMatches() on an input that contains unusual query strings
+  * file = empty-string.txt
+  * file = empty-string.txt
+==> passed
+
+Test 4: check allMatches() on search misses
+  * file = fortune1000-randomly-ordered.txt
+  * file = wiktionary.txt
+  * file = baby-names.txt
+  * file = cities.txt
+==> passed
+
+Test 5: check numberOfMatches() on search hits
+  * file = fortune1000-randomly-ordered.txt
+  * file = wiktionary.txt
+  * file = cities.txt
+==> passed
+
+Test 6: check numberOfMatches() on search misses
+  * file = fortune1000-randomly-ordered.txt
+    - failed on trial 1 of 100
+    - student      numberOfMatches("MBNB") = 1
+    - reference    numberOfMatches("MBNB") = 0
+
+  * file = wiktionary.txt
+    - failed on trial 1 of 500
+    - student      numberOfMatches("brighterr") = 1
+    - reference    numberOfMatches("brighterr") = 0
+
+  * file = cities.txt
+    - failed on trial 1 of 2500
+    - student      numberOfMatches("Elkhak") = 1
+    - reference    numberOfMatches("Elkhak") = 0
+
+==> FAILED
+
+Test 7: check that Autocomplete doesn't mutate Term[]
+  * file = cities.txt
+    - the terms[] argument to Autcomplete() was modified
+    - do not modify the terms[] array
+    - instead, create a defensive copy, and modify that array
+
+==> FAILED
+
+Test 8: check what happens when client mutates Term[] after construction
+  * file = cities.txt
+    - number of entries in student   solution: 0
+    - number of entries in reference solution: 1
+    - 1 missing entry in student solution:
+      '10023	Anār Darah, Afghanistan'
+
+
+    - failed on trial 1 of 100
+    - prefix = "An\u0101r Dara"
+
+==> FAILED
+
+Test 9: check what happens when client mutates return value of allMatches()
+  * file = cities.txt
+==> passed
+
+Test 10: check that two Autocomplete objects can be created at the same time
+  * file1 = wiktionary.txt, file2 = wiktionary.txt
+  * file1 = wiktionary.txt, file2 = baby-names.txt
+  * file1 = baby-names.txt, file2 = wiktionary.txt
+==> passed
+
+Test 11: check that allMatches() returns array of length zero for search miss
+  * file = wiktionary.txt
+  * file = baby-names.txt
+==> passed
+
+Test 12: call constructor and methods with invalid arguments
+  * call constructor with null argument
+  * call constructor with null entry in argument array
+  * call allMatches() with null argument
+  * call numberOfMatches() with null argument
+==> passed
+
+
+Total: 9/12 tests passed!
+
+
+================================================================
+********************************************************************************
+*  TIMING (substituting reference Term and BinarySearchDeluxe)
+********************************************************************************
+
+Timing Autocomplete
+*-----------------------------------------------------------
+Running 5 total tests.
+
+Test 1: call allMatches() and count calls to methods in BinarySearchDeluxe
+  * filename = cities.txt, r = 5
+  * filename = cities.txt, r = 2
+  * filename = cities.txt, r = 1
+==> passed
+
+Test 2: call numberOfMatches() and count calls to methods in BinarySearchDeluxe
+  * filename = cities.txt, r = 5
+  * filename = cities.txt, r = 2
+  * filename = cities.txt, r = 1
+==> passed
+
+Test 3: call constructor and count calls to methods in Term
+  * filename = wiktionary.txt
+    - calls to compareTo()         =  120309  
+    - calls to toString()          =       0  
+    - calls to compare() by weight =       0  
+    - calls to compare() by prefix =       0  
+
+  * filename = cities.txt
+    - calls to compareTo()         = 1430110  
+    - calls to toString()          =       0  
+    - calls to compare() by weight =       0  
+    - calls to compare() by prefix =       0  
+
+==> passed
+
+Test 4: call allMatches() k times with random r-character prefixes
+        and count calls to methods in Term
+  * filename = cities.txt, k = 1000, r = 2
+    - calls to compareTo()         =       0  
+    - calls to toString()          =       0  
+    - calls to compare() by weight = 9044180  
+    - calls to compare() by prefix =   35318  
+
+==> passed
+
+Test 5: call numberOfMatches() k times with random r-character prefixes
+        and count calls to methods in Term
+  * filename = cities.txt, k = 1000, r = 2
+    - calls to compareTo()         =       0  
+    - calls to toString()          =       0  
+    - calls to compare() by weight =       0  
+    - calls to compare() by prefix =   35308  
+
+==> passed
+
+
+Total: 5/5 tests passed!
+
+
+================================================================
+
+
+
+********************************************************************************
+*  TIMING
+********************************************************************************
+
+Timing BinarySearchDeluxe
+*-----------------------------------------------------------
+Running 4 total tests.
+
+Test 1: Count calls to compare() on arrays of random integers between 0 and 100.
+        Table shows maximum number of calls to compare() calls during 1000 trials.
+        [  max allowed is 2 + ceil(log_2(n)) ]
+
+                firstIndexOf()        lastIndexOf()
+        n        miss         hit        miss         hit     allowed
+_____________________________________________________________________
+        1          0           0           0           0           2
+        2          2           2           2           2           3
+        3          2           2           2           2           4
+        4          4           4           4           4           4
+        5          4           4           4           4           5
+        6          4           4           4           4           5
+        7          4           4           4           4           5
+        8          6*          6*          6*          6*          5
+        9          6           6           6           6           6
+       10          6           6           6           6           6
+       11          6           6           6           6           6
+       12          6           6           6           6           6
+       13          6           6           6           6           6
+       14          6           6           6           6           6
+       15          6           6           6           6           6
+       16          8*          8*          8*          8*          6
+      100         10*         10*         10*         10*          9
+     1000         18*         18*         18*         18*         12
+    10000         26*         26*         26*         26*         16
+   100000         32*         32*         32*         32*         19
+  1000000         38*         38*         38*         38*         22
+==> FAILED
+
+Test 2: Count calls to compare() on arrays containing integer keys all equal to 0.
+        Table shows maximum number of calls to compare() calls during 1000 trials.
+        [  max allowed is 2 + ceil(log_2(n)) ]
+
+                firstIndexOf()        lastIndexOf()
+        n        miss         hit        miss         hit     allowed
+_____________________________________________________________________
+       10          6           6           6           6           6
+      100         12*         12*         12*         12*          9
+     1000         18*         18*         18*         18*         12
+    10000         26*         26*         26*         26*         16
+   100000         32*         32*         32*         32*         19
+  1000000         38*         38*         38*         38*         22
+==> FAILED
+
+Test 3: Count calls to compare() on sorted arrays of 0s and 1s.
+        Table shows maximum number of calls to compare() calls during 1000 trials.
+        [  max allowed is 2 + ceil(log_2(n)) ]
+
+                firstIndexOf()        lastIndexOf()
+        n        miss         hit        miss         hit     allowed
+_____________________________________________________________________
+       10          6           6           6           6           6
+      100         12*         12*         12*         12*          9
+     1000         18*         18*         18*         18*         12
+    10000         26*         26*         26*         26*         16
+   100000         32*         32*         32*         32*         19
+  1000000         38*         38*         38*         38*         22
+==> FAILED
+
+Test 4: Count calls to compare() on sorted arrays of random integers between 0 and 1000000.
+        Table shows maximum number of calls to compare() calls during 1000 trials.
+        [  max allowed is 2 + ceil(log_2(n)) ]
+
+                firstIndexOf()        lastIndexOf()
+        n        miss         hit        miss         hit     allowed
+_____________________________________________________________________
+       10          6           6           6           6           6
+      100         10*         10*         10*         10*          9
+     1000         14*         15*         15*         15*         12
+    10000         19*         19*         19*         19*         16
+   100000         26*         26*         26*         26*         19
+  1000000         33*         33*         33*         33*         22
+==> FAILED
+
+
+Total: 0/4 tests passed!
+
+
+================================================================
+
+
+
+********************************************************************************
+*  MEMORY
+********************************************************************************
+
+Analyzing memory of Term
+*-----------------------------------------------------------
+Running 3 total tests.
+
+Test 1: memory of new Term("autocomplete", 10)
+        [ must be <= 1.1x reference solution ]
+  - memory of student   Term = 104 bytes
+  - memory of reference Term = 104 bytes
+  - student / reference      = 1.00
+==> passed
+
+Test 2: memory of new Term("binary search", 20)
+        [ must be <= 1.1x reference solution ]
+  - memory of student   Term = 104 bytes
+  - memory of reference Term = 104 bytes
+  - student / reference      = 1.00
+==> passed
+
+Test 3: memory of new Term("sort", 139)
+        [ must be <= 1.1x reference solution ]
+  - memory of student   Term = 96 bytes
+  - memory of reference Term = 96 bytes
+  - student / reference      = 1.00
+==> passed
+
+
+Total: 3/3 tests passed!
+
+
+================================================================
+
+
+
+Analyzing memory of Autocomplete
+*-----------------------------------------------------------
+Running 3 total tests.
+
+Test 1: memory with wiktionary.txt (must be <= 1.1x reference solution).
+  - memory of Terms[]                = 1058712 bytes
+  - memory of student   Autocomplete = 1058736 bytes
+  - memory of reference Autocomplete = 1058736 bytes
+  - student / reference              = 1.00
+==> passed
+
+Exception in thread "main" java.lang.IllegalArgumentException: Comparison method violates its general contract!
+	at java.base/java.util.ComparableTimSort.mergeLo(ComparableTimSort.java:748)
+	at java.base/java.util.ComparableTimSort.mergeAt(ComparableTimSort.java:485)
+	at java.base/java.util.ComparableTimSort.mergeCollapse(ComparableTimSort.java:413)
+	at java.base/java.util.ComparableTimSort.sort(ComparableTimSort.java:213)
+	at java.base/java.util.Arrays.sort(Arrays.java:1249)
+	at Autocomplete226.<init>(Autocomplete226.java:30)
+	at MemoryOfAutocomplete.testFile(MemoryOfAutocomplete.java:25)
+	at MemoryOfAutocomplete.main(MemoryOfAutocomplete.java:55)
+	at TigerFileMemoryOfAutocomplete.main(TigerFileMemoryOfAutocomplete.java:3)
+
+================================================================
+
+
+
+
